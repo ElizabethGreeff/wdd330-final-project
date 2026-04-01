@@ -1,0 +1,230 @@
+:root {
+    --secondary: #4EA1FF;
+    --primary: #1D5BA4;
+    --background: #0A2E5C;
+    --accent: #FFD95A;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Orbitron', sans-serif;
+    background: radial-gradient(circle, #0D438A, #020d1f);
+    color: white;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    background: var(--primary);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.logo img {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 6px var(--secondary));
+}
+
+.logo span {
+    font-family: 'Audiowide', cursive;
+    color: var(--accent);
+    font-size: 1.6rem;
+    letter-spacing: 1px;
+    text-shadow: 0 0 8px var(--background);
+}
+
+nav {
+    display: flex;
+    gap: 1.5rem;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    color: var(--accent);
+}
+
+.nav-menu {
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(6px);
+    text-decoration: none;
+    position: relative;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.nav-item .icon {
+    font-size: 1.4rem;
+    color: var(--accent);
+    text-shadow: 0 0 8px var(--secondary);
+}
+
+.nav-item .label {
+    position: absolute;
+    bottom: -25px;
+    font-size: 0.75rem;
+    color: white;
+    opacity: 0;
+    transform: translateY(-5px);
+    transition: 0.3s;
+}
+
+.nav-item:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow:
+        0 0 15px var(--secondary),
+        0 0 25px rgba(78, 161, 255, 0.4);
+}
+
+.nav-item:hover .label {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.nav-item:hover::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    border: 1px solid var(--secondary);
+    opacity: 0.6;
+}
+
+main {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    padding: 2rem;
+}
+
+.apod-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.side-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.card {
+    background: var(--primary);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.card img {
+    width: 100%;
+    border-radius: 10px;
+    margin: 1rem 0;
+}
+
+.apod-card-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.apod-image img,
+.apod-image iframe {
+    width: 100%;
+    border-radius: 10px;
+    max-height: 400px;
+    object-fit: cover;
+}
+
+.apod-content {
+    text-align: left;
+}
+
+.apod-title {
+    font-family: 'Audiowide', cursive;
+    color: var(--accent);
+    margin-bottom: 0.3rem;
+}
+
+.apod-date {
+    font-size: 0.8rem;
+    opacity: 0.7;
+    margin-bottom: 0.8rem;
+}
+
+.apod-description {
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.apod-btn {
+    margin-top: 1rem;
+    padding: 0.6rem 1rem;
+    border: none;
+    border-radius: 6px;
+    background: var(--secondary);
+    color: white;
+    cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    transition: 0.3s;
+}
+
+.apod-btn:hover {
+    background: var(--accent);
+    color: black;
+}
+
+h2 {
+    margin-bottom: 1rem;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    transition: 0.3s;
+    box-shadow: 0 0 20px rgba(62, 129, 214, 0.5);
+}
+
+@media (max-width: 768px) {
+    main {
+        grid-template-columns: 1fr;
+    }
+
+    nav {
+        gap: 1rem;
+    }
+}

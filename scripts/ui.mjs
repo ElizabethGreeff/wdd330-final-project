@@ -1,3 +1,11 @@
+function getFavorites() {
+    return JSON.parse(localStorage.getItem("favorites")) || [];
+}
+
+function saveFavorites(favorites) {
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+}
+
 export function renderAPOD(data) {
   const container = document.getElementById("apod-container");
 
@@ -24,4 +32,62 @@ export function renderAPOD(data) {
 
         </div>
     `;
+}
+
+export function renderSunTimes(sunData, moonData) {
+    document.querySelector(".sunrise").textContent =
+        new Date(sunData.sunrise).toLocaleTimeString();
+
+    document.querySelector(".sunset").textContent =
+        new Date(sunData.sunset).toLocaleTimeString();
+
+    document.querySelector(".moonrise").textContent = moonData.moonrise;
+    document.querySelector(".moonset").textContent = moonData.moonset;
+}
+
+export function renderGallery(images) {
+    const container = document.getElementById("gallery");
+    const favorites = getFavorites();
+
+    container.innerHTML = images.map((item, index) => {
+        const img = item.links?.[0]?.href;
+        const title = item.data?.[0]?.title;
+        const isFav = favorites.some(f => f.links?.[0]?.href === img);
+
+        return `
+            <div class="gallery-card">
+                <img src="${img}" alt="${title}">
+                <p>${title}</p>
+                <button class="fav-btn" data-index="${index}">
+                    ${isFav ? "★" : "☆"}
+                </button>
+            </div>
+        `;
+    }).join("");
+
+    document.querySelectorAll(".fav-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const i = btn.dataset.index;
+            toggleFavorite(images[i], btn);
+        });
+    });
+}
+
+function toggleFavorite(item, button) {
+    let favorites = getFavorites();
+    const img = item.links?.[0]?.href;
+
+    const exists = favorites.find(f => f.links?.[0]?.href === img);
+
+    if (exists) {
+        // remove
+        favorites = favorites.filter(f => f.links?.[0]?.href !== img);
+        button.textContent = "☆";
+    } else {
+        // add
+        favorites.push(item);
+        button.textContent = "★";
+    }
+
+    saveFavorites(favorites);
 }

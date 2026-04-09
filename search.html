@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Astronomy Explorer</title>
+    <link rel="icon" href="favicon.ico" />
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Orbitron:wght@300;400;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles/main.css" />
+
+    <!-- Scripts -->
+    <script type="module" src="./scripts/search.mjs" defer></script>
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="logo">
+            <img src="images/logo.png" alt="Astronomy Explorer Logo">
+            <span>Astronomy Explorer</span>
+        </div>
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-item">
+                <span class="icon">✦</span>
+                <span class="label">Home</span>
+            </a>
+            <a href="search.html" class="nav-item active">
+                <span class="icon">★</span>
+                <span class="label">Search</span>
+            </a>
+            <a href="favorites.html" class="nav-item">
+                <span class="icon">✶</span>
+                <span class="label">Favorites</span>
+            </a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="gallery-section">
+            <h2>Search the Cosmos</h2>
+        
+            <div class="search-controls">
+                <input type="text" id="search-input" placeholder="Search space..." />
+        
+                <select id="search-filter">
+                    <option value="">All</option>
+                    <option value="galaxy">Galaxy</option>
+                    <option value="nebula">Nebula</option>
+                    <option value="planet">Planet</option>
+                    <option value="astronaut">Astronaut</option>
+                    <option value="moon">Moon</option>
+                    <option value="mars">Mars</option>
+                    <option value="saturn">Saturn</option>
+                    <option value="stars">Stars</option>
+                    <option value="universe">Universe</option>
+                    <option value="telescope">Telescope</option>
+                </select>
+        
+                <button id="search-btn">Search</button>
+            </div>
+
+            <div id="loader" class="loader hidden">✦</div>
+        
+            <div id="search-results" class="gallery-grid"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Astronomy Explorer. All rights reserved.</p>
+    </footer>
+
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+    
+            <span id="close-modal">✖</span>
+    
+            <button id="prev-btn" class="nav-arrow">◀</button>
+            <button id="next-btn" class="nav-arrow">▶</button>
+    
+            <img id="modal-img">
+            <h3 id="modal-title"></h3>
+            <p id="modal-desc"></p>
+    
+        </div>
+    </div>
+
+</body>
+
+</html>

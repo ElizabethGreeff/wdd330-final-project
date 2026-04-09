@@ -58,9 +58,46 @@
                     <p>Check back later!</p>
                 </div>
             </aside>
-        
+            
+            <section class="sun-section card" id="sun-times">
+                <div class="sun-content time-line">
+                    <span>Sunrise: <strong class="sunrise"></strong></span>
+                    <span>Sunset: <strong class="sunset"></strong></span>
+                </div>
+                
+                <div class="moon-content time-line">
+                    <span>Moonrise: <strong class="moonrise"></strong></span>
+                    <span>Moonset: <strong class="moonset"></strong></span>
+                </div>
+            </section>
+
+            <section class="gallery-section">
+                <div class="gallery-header">
+                    <h2>Astronomy Gallery</h2>
+                    <button id="refresh-gallery">⟳</button>
+                </div>
+                <div id="gallery" class="gallery-grid"></div>
+            </section>
         </main>
 
+        <footer>
+            <p>&copy; 2026 Astronomy Explorer. All rights reserved.</p>
+        </footer>
+
+        <div id="modal" class="modal hidden">
+            <div class="modal-content">
+        
+                <span id="close-modal">✖</span>
+        
+                <button id="prev-btn" class="nav-arrow">◀</button>
+                <button id="next-btn" class="nav-arrow">▶</button>
+        
+                <img id="modal-img">
+                <h3 id="modal-title"></h3>
+                <p id="modal-desc"></p>
+        
+            </div>
+        </div>
     </body>
 
 </html>

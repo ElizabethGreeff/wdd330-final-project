@@ -33,9 +33,16 @@ export function initModal() {
     });
 }
 
-export function openModal(item, list = [item], index = 0) {
-    currentList = list;
-    currentIndex = index;
+export function openModal(arg1, arg2, arg3) {
+    if (Array.isArray(arg1)) {
+        currentList = arg1;
+        currentIndex = arg2;
+    }
+    
+    else {
+        currentList = arg2 || [arg1];
+        currentIndex = arg3 || 0;
+    }
 
     updateModal();
 

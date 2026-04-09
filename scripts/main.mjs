@@ -3,8 +3,6 @@ import { renderAPOD, renderSunTimes, renderGallery } from "./ui.mjs";
 import { getUserLocation } from "./location.mjs";
 import { openModal, initModal } from "./modal.mjs";
 
-let apodData;
-
 async function init() {
     try {
         try {
@@ -13,10 +11,6 @@ async function init() {
         } catch (err) {
             console.warn("APOD failed, skipping...", err);
         }
-
-        document.getElementById("apod-container").addEventListener("click", () => {
-            openModal(apodData);
-        });
 
         const { lat, lng } = await getUserLocation();
 
@@ -32,6 +26,12 @@ async function init() {
     const images = await getGalleryImages();
     renderGallery(images);
 
+    document.querySelectorAll(".gallery-card").forEach((card, index) => {
+        card.addEventListener("click", () => {
+            openModal(images, index);
+        });
+    });
+
     const queries = ["galaxy", "nebula", "planet", "stars", "universe"];
 
     document.getElementById("refresh-gallery")
@@ -41,6 +41,12 @@ async function init() {
 
             const images = await getGalleryImages(randomQuery);
             renderGallery(images);
+            
+            document.querySelectorAll(".gallery-card").forEach((card, index) => {
+                card.addEventListener("click", () => {
+                    openModal(images, index);
+                });
+            });
         });
 }
 

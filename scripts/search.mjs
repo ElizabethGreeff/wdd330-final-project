@@ -66,7 +66,7 @@ function render(images) {
     });
 
     document.querySelectorAll(".gallery-card").forEach((card, i) => {
-        card.addEventListener("click", () => openModal(images[i]));
+        card.addEventListener("click", () => openModal(images, i));
     });
 }
 
@@ -83,15 +83,19 @@ async function loadImages(query) {
     const loader = document.getElementById("loader");
     loader.classList.remove("hidden");
 
-    const images = await fetchImages(query);
-
-    loader.classList.add("hidden");
-
-    render(images);
+    try {
+        const images = await fetchImages(query);
+        render(images);
+    } catch (err) {
+        console.error("Search failed:", err);
+        document.getElementById("search-results").innerHTML =
+            "<p>Failed to load images, please reload the page</p>";
+    } finally {
+        loader.classList.add("hidden");
+    }
 }
 
 window.addEventListener("DOMContentLoaded", () => {
     initModal();
     loadImages("space");
 });
-

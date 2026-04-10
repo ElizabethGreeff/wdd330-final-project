@@ -35,11 +35,17 @@ export function renderAPOD(data) {
 }
 
 export function renderSunTimes(sunData, moonData) {
+    const formatTime = (time) =>
+        new Date(time).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+        });
+
     document.querySelector(".sunrise").textContent =
-        new Date(sunData.sunrise).toLocaleTimeString();
+        formatTime(sunData.sunrise);
 
     document.querySelector(".sunset").textContent =
-        new Date(sunData.sunset).toLocaleTimeString();
+        formatTime(sunData.sunset);
 
     document.querySelector(".moonrise").textContent = moonData.moonrise;
     document.querySelector(".moonset").textContent = moonData.moonset;
@@ -80,11 +86,9 @@ function toggleFavorite(item, button) {
     const exists = favorites.find(f => f.links?.[0]?.href === img);
 
     if (exists) {
-        // remove
         favorites = favorites.filter(f => f.links?.[0]?.href !== img);
         button.textContent = "☆";
     } else {
-        // add
         favorites.push(item);
         button.textContent = "★";
     }

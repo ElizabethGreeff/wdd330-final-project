@@ -1,27 +1,15 @@
-import { getAPOD, getSunTimes, getMoonTimes, getGalleryImages } from "./api.mjs";
-import { renderAPOD, renderSunTimes, renderGallery } from "./ui.mjs";
+import { getAPOD, getSunTimes, getMoonTimes, getGalleryImages, getVisibleTonight } from "./api.mjs";
+import { renderAPOD, renderSunTimes, renderGallery, renderVisibleTonight, themeChange, menuToggle, initGlobalSearch } from "./ui.mjs";
 import { getUserLocation } from "./location.mjs";
 import { openModal, initModal } from "./modal.mjs";
 
 async function init() {
-    try {
-        try {
-            const apodData = await getAPOD();
-            renderAPOD(apodData);
-        } catch (err) {
-            console.warn("APOD failed, skipping...", err);
-        }
+    let lat, lng;
+    themeChange();
 
-        const { lat, lng } = await getUserLocation();
+    menuToggle();
 
-        const sunData = await getSunTimes(lat, lng);
-        const moonData = await getMoonTimes(lat, lng);
-
-        renderSunTimes(sunData.results, moonData);
-
-    } catch (error) {
-        console.error("INIT ERROR:", error);
-    }
+    initGlobalSearch();
 
     const images = await getGalleryImages();
     renderGallery(images);
@@ -32,22 +20,53 @@ async function init() {
         });
     });
 
-    const queries = ["galaxy", "nebula", "planet", "stars", "universe"];
+    const queries = ["galaxy", "nebula", "planet", "stars", "universe", "moon", "sun", "black hole", "supernova", "comet", "asteroid", "satellite", "space station", "cosmos", "quasar", "pulsar", "meteor", "eclipse", "aurora", "constellation", "dark matter", "exoplanet", "gravity", "light year", "wormhole", "multiverse", "dark energy", "event horizon", "singularity", "space-time", "interstellar", "galactic cluster", "red giant", "white dwarf", "neutron star", "hubble", "kepler", "spitzer", "james webb", "voyager", "cassini", "apollo", "sputnik", "iss"];
 
-    document.getElementById("refresh-gallery")
-        .addEventListener("click", async () => {
-            const randomQuery =
-                queries[Math.floor(Math.random() * queries.length)];
+    const refreshBtn = document.getElementById("refresh-gallery");
 
-            const images = await getGalleryImages(randomQuery);
-            renderGallery(images);
-            
-            document.querySelectorAll(".gallery-card").forEach((card, index) => {
-                card.addEventListener("click", () => {
-                    openModal(images, index);
-                });
+    refreshBtn.addEventListener("click", async () => {
+        refreshBtn.classList.add("spinning");
+
+        const randomQuery =
+            queries[Math.floor(Math.random() * queries.length)];
+
+        const images = await getGalleryImages(randomQuery);
+        renderGallery(images);
+
+        document.querySelectorAll(".gallery-card").forEach((card, index) => {
+            card.addEventListener("click", () => {
+                openModal(images, index);
             });
         });
+
+        setTimeout(() => {
+            refreshBtn.classList.remove("spinning");
+        }, 800);
+    });
+
+    
+    const location = await getUserLocation();
+    lat = location.lat;
+    lng = location.lng;
+
+    const sunData = await getSunTimes(lat, lng);
+    const moonData = await getMoonTimes(lat, lng);
+
+    renderSunTimes(sunData.results, moonData);
+
+    try {
+        const visible = await getVisibleTonight(lat, lng);
+        renderVisibleTonight(visible);
+    } catch (err) {
+        console.warn("Visible tonight failed", err);
+    }
+
+    try {
+        const apodData = await getAPOD();
+        renderAPOD(apodData);
+    } catch (err) {
+        console.warn("APOD failed, skipping...", err);
+    }
 }
 
 init();

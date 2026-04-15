@@ -1,4 +1,7 @@
 import { openModal, initModal } from "./modal.mjs";
+import { menuToggle, themeChange, initGlobalSearch, getFavorites, saveFavorites } from "./ui.mjs";
+
+//create all functions related to the search page here, then call an init function at the end to run them
 
 async function fetchImages(query = "space") {
     const res = await fetch(
@@ -6,15 +9,12 @@ async function fetchImages(query = "space") {
     );
     const data = await res.json();
 
-    return data.collection.items.slice(0, 25);
+    return data.collection.items.slice(0, 35);
 }
 
-function getFavorites() {
-    return JSON.parse(localStorage.getItem("favorites")) || [];
-}
-
-function saveFavorites(favs) {
-    localStorage.setItem("favorites", JSON.stringify(favs));
+function getQueryFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("q");
 }
 
 function toggleFavorite(item, button) {
@@ -70,15 +70,6 @@ function render(images) {
     });
 }
 
-document.getElementById("search-btn").onclick = () => {
-    const input = document.getElementById("search-input").value;
-    const filter = document.getElementById("search-filter").value;
-
-    const query = `${input} ${filter}`.trim();
-
-    loadImages(query);
-};
-
 async function loadImages(query) {
     const loader = document.getElementById("loader");
     loader.classList.remove("hidden");
@@ -95,7 +86,25 @@ async function loadImages(query) {
     }
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-    initModal();
-    loadImages("space");
-});
+function init() {
+    menuToggle();
+    themeChange();
+    initGlobalSearch();
+
+    document.getElementById("search-btn").onclick = () => {
+        const input = document.getElementById("search-input").value;
+        const filter = document.getElementById("search-filter").value;
+
+        const query = `${input} ${filter}`.trim();
+
+        loadImages(query);
+    };
+
+    window.addEventListener("DOMContentLoaded", () => {
+        initModal();
+        const query = getQueryFromURL() || "space";
+        loadImages(query);
+    });
+}
+
+init();

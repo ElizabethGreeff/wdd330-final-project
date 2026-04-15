@@ -1,13 +1,7 @@
 import { openModal, initModal } from "./modal.mjs";
+import { menuToggle, themeChange, initGlobalSearch, getFavorites, saveFavorites } from "./ui.mjs";
 
-function getFavorites() {
-    return JSON.parse(localStorage.getItem("favorites")) || [];
-}
-
-function saveFavorites(favs) {
-    localStorage.setItem("favorites", JSON.stringify(favs));
-}
-
+// Create all functions related to the favorites page here, then call an init function at the end to run them
 function renderFavorites() {
     const container = document.getElementById("favorites-gallery");
     const favorites = getFavorites();
@@ -51,5 +45,13 @@ function removeFavorite(index) {
     renderFavorites();
 }
 
-renderFavorites();
-initModal();
+function init() {
+    // Render favorites section
+    renderFavorites();
+    initModal();
+    menuToggle();
+    themeChange();
+    initGlobalSearch();
+}
+
+init();

@@ -25,7 +25,24 @@
             <img src="images/logo.png" alt="Astronomy Explorer Logo">
             <span>Astronomy Explorer</span>
         </div>
+
+        <div class="header-search">
+            <input type="text" id="global-search" placeholder="Search the cosmos..." />
+            <button id="global-search-btn">⌕</button>
+        </div>
+
+        <button id="theme-toggle">☼</button>
+
         <nav class="nav-menu">
+            <button id="menu-toggle">☰</button>
+            
+            <div id="side-menu" class="side-menu">
+                <button id="close-menu" class="close-btn">✖</button>
+                <a href="index.html" class="nav-side">Home</a>
+                <a href="search.html" class="nav-side active">Search</a>
+                <a href="favorites.html" class="nav-side">Favorites</a>
+            </div>
+            
             <a href="index.html" class="nav-item">
                 <span class="icon">✦</span>
                 <span class="label">Home</span>

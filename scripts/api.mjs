@@ -1,24 +1,34 @@
 export async function getAPOD() {
-    try {
-        const response = await fetch(
-            `https://api.nasa.gov/planetary/apod?api_key=${API_KEY}`
-        );
+    const API_KEY = "JYghugWaXsqKBKTGFVUNmOUbkDI05cdCwhRF4cj2";
 
-        if (!response.ok) throw new Error("API failed");
+    for (let i = 1; i <= 3; i++) {
+        try {
+            const date = new Date();
+            date.setDate(date.getDate() - i);
 
-        return await response.json();
+            const formatted = date.toISOString().split("T")[0];
 
-    } catch (error) {
-        console.warn("Using fallback APOD");
+            const response = await fetch(
+                `https://api.nasa.gov/planetary/apod?api_key=${API_KEY}&date=${formatted}`
+            );
 
-        return {
-            title: "Fallback Space Image",
-            date: "--/--/----",
-            explanation: "NASA API is being moody today so here's a backup image from their assets :)",
-            url: "https://images-assets.nasa.gov/image/PIA12235/PIA12235~orig.jpg",
-            media_type: "image"
-        };
+            if (!response.ok) continue;
+
+            return await response.json();
+
+        } catch (err) {
+            console.warn("Retrying APOD...");
+        }
     }
+
+    return {
+        title: "Fallback Space Image",
+        date: "--/--/----",
+        explanation: "NASA API is being moody today so here's a backup image :)",
+        url: "https://images-assets.nasa.gov/image/PIA12235/PIA12235~orig.jpg",
+        media_type: "image"
+    };
+    
 }
 
 export async function getSunTimes(lat, lng) {
@@ -60,4 +70,33 @@ export async function getGalleryImages(query = "galaxy") {
     const data = await response.json();
 
     return data.collection.items.slice(0, 6);
+}
+
+const ASTRONOMY_ID = "6d80ecc4-fe31-476f-aadc-825b7f90cad4";
+const ASTRONOMY_SECRET = "95db691b25a04d9a0e8a0cac58ac49617b3aaf58dc05e9d77c59f535f649b112746d6d360a28abd371a2e9c7e20b7f15bac81bdceea6d45e4ceb64ba9005aa78a354324f03eab9cd1aa6b365e87e098e3f5ff36883c5b3701ba1f3f181bfe8d32846d1026ab4b41a05d3189073018fcb";
+
+function getAuthHeader() {
+    return "Basic " + btoa(`${ASTRONOMY_ID}:${ASTRONOMY_SECRET}`);
+}
+
+export async function getVisibleTonight(lat, lng) {
+    const today = new Date().toISOString().split("T")[0];
+
+    const res = await fetch(
+        `https://api.astronomyapi.com/api/v2/bodies/positions?latitude=${lat}&longitude=${lng}&from_date=${today}&to_date=${today}&time=22:00:00&elevation=0`,
+        {
+            headers: {
+                Authorization: getAuthHeader()
+            }
+        }
+    );
+
+    if (!res.ok) {
+        console.error("Astronomy API error:", res.status);
+        throw new Error("Failed to fetch visible objects");
+    }
+
+    const data = await res.json();
+
+    return data?.data?.table?.rows || [];
 }
